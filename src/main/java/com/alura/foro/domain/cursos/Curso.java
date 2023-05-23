@@ -26,5 +26,16 @@ public class Curso {
 	@JoinColumn(name = "cursoId",referencedColumnName = "id")
 	private List<Topico> topicos = new ArrayList<>();
 
+	public Curso(DatosRegistroCurso datosRegistroCurso){
+		this.nombre = datosRegistroCurso.nombre();
+		this.categoria = datosRegistroCurso.categoria();
 
+	}
+
+	public void actualizarCurso(DatosActualizarCurso datosActualizarCurso) {
+		if(datosActualizarCurso.nombre()!=null)
+			this.nombre=datosActualizarCurso.nombre();
+		if(datosActualizarCurso.categoria()!=null)
+			this.categoria=datosActualizarCurso.categoria();
+	}
 }
