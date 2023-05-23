@@ -34,6 +34,11 @@ public class Usuario {
 	@JoinColumn(name = "usuarioId",referencedColumnName = "id")
 	private List<Respuesta> respuestas = new ArrayList<>();
 
+	public Usuario(DatosRegistroUsuario datosRegistroUsuario){
+		this.nombre = datosRegistroUsuario.nombre();
+		this.email = datosRegistroUsuario.email();
+		this.contraseña = datosRegistroUsuario.contraseña();
+	}
 
 
 }

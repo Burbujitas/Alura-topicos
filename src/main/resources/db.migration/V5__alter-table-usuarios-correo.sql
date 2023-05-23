@@ -1,0 +1,3 @@
+ALTER TABLE usuarios
+ADD UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE;
+
