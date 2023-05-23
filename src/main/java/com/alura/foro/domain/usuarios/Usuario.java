@@ -40,5 +40,13 @@ public class Usuario {
 		this.contraseña = datosRegistroUsuario.contraseña();
 	}
 
+	public void actualizarUsuarios(DatosActualizarUsuario datosActualizarUsuario){
+		if(datosActualizarUsuario.nombre()!=null)
+			this.nombre = datosActualizarUsuario.nombre();
+		if(datosActualizarUsuario.email() != null)
+			this.email = datosActualizarUsuario.email();
+		if(datosActualizarUsuario.contraseña()!=contraseña)
+			this.contraseña=datosActualizarUsuario.contraseña();
+	}
 
 }

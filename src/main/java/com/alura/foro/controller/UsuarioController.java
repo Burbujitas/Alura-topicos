@@ -1,17 +1,15 @@
 package com.alura.foro.controller;
 
 
-import com.alura.foro.domain.usuarios.DatosRegistroUsuario;
-import com.alura.foro.domain.usuarios.DatosRespuestaUsuario;
-import com.alura.foro.domain.usuarios.Usuario;
-import com.alura.foro.domain.usuarios.UsuarioRepository;
+import com.alura.foro.domain.usuarios.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -39,4 +37,29 @@ public class UsuarioController {
         return ResponseEntity.created(url).body(datosRespuestaUsuario);
     }
 
+    @PutMapping
+    @Transactional
+    public ResponseEntity actualizarUsuario(@RequestBody @Valid DatosActualizarUsuario datosActualizarUsuario){
+        Usuario usuario = usuarioRepository.getReferenceById(datosActualizarUsuario.id());
+        usuario.actualizarUsuarios(datosActualizarUsuario);
+        return ResponseEntity.ok(new DatosRespuestaUsuario(usuario.getId(),usuario.getNombre(),usuario.getEmail()));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<DatosRespuestaUsuario>> mostrarUsuario(@PageableDefault(size = 2)Pageable paginacion){
+        return ResponseEntity.ok(usuarioRepository.findAll(paginacion).map(DatosRespuestaUsuario::new));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<DatosRespuestaUsuario> mostrarUsuario(@PathVariable Long id){
+        Usuario usuario = usuarioRepository.getReferenceById(id);
+        var datosUsuario =new DatosRespuestaUsuario(usuario.getId(),usuario.getNombre(),usuario.getEmail());
+        return ResponseEntity.ok(datosUsuario);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity eliminarUsuario(@PathVariable Long id){
+        Usuario usuario = usuarioRepository.getReferenceById(id);
+        System.out.println(usuario.getNombre());
+        usuarioRepository.delete(usuario);
+        return ResponseEntity.noContent().build();
+    }
 }
