@@ -30,9 +30,9 @@ public class UsuarioController {
     public ResponseEntity<DatosRespuestaUsuario> registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosRegistroUsuario, UriComponentsBuilder uriComponentsBuilder){
         System.out.println(datosRegistroUsuario);
         Usuario usuario = usuarioRepository.save(new Usuario(datosRegistroUsuario));
-        DatosRespuestaUsuario datosRespuestaUsuario = new DatosRespuestaUsuario(usuario.getId(),usuario.getNombre(),usuario.getEmail());
+        DatosRespuestaUsuario datosRespuestaUsuario = new DatosRespuestaUsuario(usuario.getUsusarioId(),usuario.getNombre(),usuario.getEmail());
 
-        URI url = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
+        URI url = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getUsusarioId()).toUri();
 
         return ResponseEntity.created(url).body(datosRespuestaUsuario);
     }
@@ -42,7 +42,7 @@ public class UsuarioController {
     public ResponseEntity actualizarUsuario(@RequestBody @Valid DatosActualizarUsuario datosActualizarUsuario){
         Usuario usuario = usuarioRepository.getReferenceById(datosActualizarUsuario.id());
         usuario.actualizarUsuarios(datosActualizarUsuario);
-        return ResponseEntity.ok(new DatosRespuestaUsuario(usuario.getId(),usuario.getNombre(),usuario.getEmail()));
+        return ResponseEntity.ok(new DatosRespuestaUsuario(usuario.getUsusarioId(),usuario.getNombre(),usuario.getEmail()));
     }
 
     @GetMapping
@@ -52,7 +52,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaUsuario> mostrarUsuario(@PathVariable Long id){
         Usuario usuario = usuarioRepository.getReferenceById(id);
-        var datosUsuario =new DatosRespuestaUsuario(usuario.getId(),usuario.getNombre(),usuario.getEmail());
+        var datosUsuario =new DatosRespuestaUsuario(usuario.getUsusarioId(),usuario.getNombre(),usuario.getEmail());
         return ResponseEntity.ok(datosUsuario);
     }
     @DeleteMapping("/{id}")

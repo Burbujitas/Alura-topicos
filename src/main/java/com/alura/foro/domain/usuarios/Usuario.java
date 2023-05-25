@@ -22,17 +22,18 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "id")
+	private Long ususarioId;
 	private String nombre;
 	private String email;
 	private String contraseña;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuarioId",referencedColumnName = "id")
-	private List<Topico> topicos = new ArrayList<>();
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuarioId",referencedColumnName = "id")
-	private List<Respuesta> respuestas = new ArrayList<>();
+	//@OneToMany(cascade = CascadeType.ALL)
+	//@JoinColumn(name = "usuarioId",referencedColumnName = "id")
+	//private List<Topico> topicos = new ArrayList<>();
+	//@OneToMany(cascade = CascadeType.ALL)
+	//@JoinColumn(name = "usuarioId",referencedColumnName = "id")
+	//private List<Respuesta> respuestas = new ArrayList<>();
 
 	public Usuario(DatosRegistroUsuario datosRegistroUsuario){
 		this.nombre = datosRegistroUsuario.nombre();
