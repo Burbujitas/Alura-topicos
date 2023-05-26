@@ -24,8 +24,25 @@ public class Respuesta {
 	private String mensaje;
 	private LocalDateTime fechaCreacion;
 	private Boolean solucion;
-	private Long usuarioId;
+
+	@ManyToOne
+	@JoinColumn(name = "usuarioId")
+	private Usuario usuario;
 	private Long topicoId;
 
-
+	public Respuesta(DatosRegistrarRespuesta datosRegistrarRespuesta,Usuario usuario)
+	{
+		this.mensaje = datosRegistrarRespuesta.mensaje();
+		this.fechaCreacion = LocalDateTime.now();
+		this.solucion = false;
+		this.usuario = usuario;
+		this.topicoId = datosRegistrarRespuesta.topicoId();
+	}
+	public void actulizarRespuesta(DatosActualizarRespuesta datosActualizarRespuesta)
+	{
+		if(datosActualizarRespuesta.mensaje()!=null)
+			this.mensaje = datosActualizarRespuesta.mensaje();
+		if(datosActualizarRespuesta.solucion()!=null)
+			this.solucion = datosActualizarRespuesta.solucion();
+	}
 }

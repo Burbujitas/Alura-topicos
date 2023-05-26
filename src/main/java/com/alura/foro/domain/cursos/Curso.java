@@ -10,7 +10,6 @@ import java.util.List;
 @Entity(name = "Curso")
 @Table(name = "cursos")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")

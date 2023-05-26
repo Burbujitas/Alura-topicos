@@ -46,7 +46,7 @@ public class TopicoController {
 
         Topico topico = topicoRepository.save(new Topico(datosRegistroTopico,curso,usuario));
 
-        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topico,new DatosRespuestaUsuario(usuario),new DatosRespuestaCurso(curso));
+        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topico);
 
         URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
 
@@ -59,18 +59,18 @@ public class TopicoController {
         Topico topico = topicoRepository.getReferenceById(id);
 
         topico.actualizarTopico(datosActualizarTopico);
-        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topico,new DatosRespuestaUsuario(topico.getUsuario()),new DatosRespuestaCurso(topico.getCurso()));
+        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topico);
 
         return ResponseEntity.ok(datosRespuestaTopico);
     }
 
     @GetMapping
-    public ResponseEntity<Page<Topico>> mostrarTopicos(@PageableDefault(size = 10)Pageable paginacion)
+    public ResponseEntity<Page<DatosRespuestaTopico>> mostrarTopicos(@PageableDefault(size = 10)Pageable paginacion)
     {
         List<StatusTopico> lista = Arrays.asList(StatusTopico.CERRADO);
        // Page<Topico> topico = topicoRepository.findAll(paginacion);
 
-        return ResponseEntity.ok(topicoRepository.findByEstadoNotIn(paginacion,lista));
+        return ResponseEntity.ok(topicoRepository.findByEstadoNotIn(paginacion,lista).map(DatosRespuestaTopico::new));
     }
 
     @GetMapping("{id}")
@@ -78,7 +78,7 @@ public class TopicoController {
     {
         Topico topico = topicoRepository.getReferenceById(id);
 
-        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topico,new DatosRespuestaUsuario(topico.getUsuario()),new DatosRespuestaCurso(topico.getCurso()));
+        DatosRespuestaTopico datosRespuestaTopico = new DatosRespuestaTopico(topico);
 
         return ResponseEntity.ok(datosRespuestaTopico);
     }

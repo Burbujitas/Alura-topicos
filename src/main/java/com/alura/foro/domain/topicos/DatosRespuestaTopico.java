@@ -18,9 +18,8 @@ public record DatosRespuestaTopico(
 
 
 ) {
-    public DatosRespuestaTopico(Topico topico, DatosRespuestaUsuario usuario, DatosRespuestaCurso curso){
-        this(topico.getId(), topico.getTitulo(), topico.getMensaje(),topico.getFechaCreacion(), topico.getEstado(),usuario,curso);
+    public DatosRespuestaTopico(Topico topico){
+        this(topico.getId(), topico.getTitulo(), topico.getMensaje(),topico.getFechaCreacion(), topico.getEstado(),new DatosRespuestaUsuario(topico.getUsuario()),new DatosRespuestaCurso(topico.getCurso()));
     }
-
 
 }
