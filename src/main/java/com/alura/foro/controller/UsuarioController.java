@@ -2,6 +2,7 @@ package com.alura.foro.controller;
 
 
 import com.alura.foro.domain.usuarios.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class UsuarioController {
 
     @PutMapping
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity actualizarUsuario(@RequestBody @Valid DatosActualizarUsuario datosActualizarUsuario){
         Usuario usuario = usuarioRepository.getReferenceById(datosActualizarUsuario.id());
         usuario.actualizarUsuarios(datosActualizarUsuario,passwordEncoder.encode(datosActualizarUsuario.contraseña()));
@@ -51,16 +53,19 @@ public class UsuarioController {
     }
 
     @GetMapping
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Page<DatosRespuestaUsuario>> mostrarUsuario(@PageableDefault(size = 10)Pageable paginacion){
         return ResponseEntity.ok(usuarioRepository.findAll(paginacion).map(DatosRespuestaUsuario::new));
     }
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<DatosRespuestaUsuario> mostrarUsuario(@PathVariable Long id){
         Usuario usuario = usuarioRepository.getReferenceById(id);
         var datosUsuario =new DatosRespuestaUsuario(usuario.getUsusarioId(),usuario.getNombre(),usuario.getEmail());
         return ResponseEntity.ok(datosUsuario);
     }
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity eliminarUsuario(@PathVariable Long id){
         Usuario usuario = usuarioRepository.getReferenceById(id);
         System.out.println(usuario.getNombre());

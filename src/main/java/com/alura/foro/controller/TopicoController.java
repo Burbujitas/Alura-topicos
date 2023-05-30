@@ -7,6 +7,7 @@ import com.alura.foro.domain.topicos.*;
 import com.alura.foro.domain.usuarios.DatosRespuestaUsuario;
 import com.alura.foro.domain.usuarios.Usuario;
 import com.alura.foro.domain.usuarios.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.Enumerated;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/topicos")
+@SecurityRequirement(name = "bearer-key")
 public class TopicoController {
 
     private TopicoRepository topicoRepository;

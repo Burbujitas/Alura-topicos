@@ -7,6 +7,7 @@ import com.alura.foro.domain.topicos.Topico;
 import com.alura.foro.domain.usuarios.DatosRespuestaUsuario;
 import com.alura.foro.domain.usuarios.Usuario;
 import com.alura.foro.domain.usuarios.UsuarioRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/respuestas")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestaController {
 
     private RespuestaRepository respuestaRepository;

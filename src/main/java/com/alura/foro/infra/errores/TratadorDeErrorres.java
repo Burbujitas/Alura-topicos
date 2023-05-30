@@ -1,6 +1,7 @@
 package com.alura.foro.infra.errores;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,10 +21,16 @@ public class TratadorDeErrorres {
         var errores= e.getFieldErrors().stream().map(DatosErrorValidacion::new).toList();
         return ResponseEntity.badRequest().body(errores);
     }
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity errorSort400(PropertyReferenceException e)
+    {
+
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity prueba(SQLIntegrityConstraintViolationException e)
     {
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
     private record DatosErrorValidacion(String campo,String error){
         public DatosErrorValidacion(FieldError error){

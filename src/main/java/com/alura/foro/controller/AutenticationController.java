@@ -4,6 +4,8 @@ import com.alura.foro.domain.usuarios.DatosAutenticacionUsuario;
 import com.alura.foro.domain.usuarios.Usuario;
 import com.alura.foro.infra.security.DatosJWTToken;
 import com.alura.foro.infra.security.TokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
