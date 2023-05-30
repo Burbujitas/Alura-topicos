@@ -30,6 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         //obtener el token del header
         var authHeader = request.getHeader("Authorization");
 
+
         if(authHeader!=null){
             var token = authHeader.replace("Bearer ","");
             System.out.println(authHeader);
