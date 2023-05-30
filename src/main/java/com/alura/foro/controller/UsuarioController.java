@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -20,16 +21,20 @@ public class UsuarioController {
 
 
     private UsuarioRepository usuarioRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsuarioController(UsuarioRepository usuarioRepository){
+    public UsuarioController(UsuarioRepository usuarioRepository,BCryptPasswordEncoder passwordEncoder){
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping
     public ResponseEntity<DatosRespuestaUsuario> registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosRegistroUsuario, UriComponentsBuilder uriComponentsBuilder){
-        System.out.println(datosRegistroUsuario);
-        Usuario usuario = usuarioRepository.save(new Usuario(datosRegistroUsuario));
+
+
+
+        Usuario usuario = usuarioRepository.save(new Usuario(datosRegistroUsuario,passwordEncoder.encode(datosRegistroUsuario.contraseña())));
         DatosRespuestaUsuario datosRespuestaUsuario = new DatosRespuestaUsuario(usuario.getUsusarioId(),usuario.getNombre(),usuario.getEmail());
 
         URI url = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getUsusarioId()).toUri();
@@ -41,12 +46,12 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity actualizarUsuario(@RequestBody @Valid DatosActualizarUsuario datosActualizarUsuario){
         Usuario usuario = usuarioRepository.getReferenceById(datosActualizarUsuario.id());
-        usuario.actualizarUsuarios(datosActualizarUsuario);
+        usuario.actualizarUsuarios(datosActualizarUsuario,passwordEncoder.encode(datosActualizarUsuario.contraseña()));
         return ResponseEntity.ok(new DatosRespuestaUsuario(usuario.getUsusarioId(),usuario.getNombre(),usuario.getEmail()));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DatosRespuestaUsuario>> mostrarUsuario(@PageableDefault(size = 2)Pageable paginacion){
+    public ResponseEntity<Page<DatosRespuestaUsuario>> mostrarUsuario(@PageableDefault(size = 10)Pageable paginacion){
         return ResponseEntity.ok(usuarioRepository.findAll(paginacion).map(DatosRespuestaUsuario::new));
     }
     @GetMapping("/{id}")
